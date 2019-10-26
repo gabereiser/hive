@@ -1,5 +1,11 @@
 
 # HIVE #
+
+[![CircleCI](https://circleci.com/gh/testsquad/hive/tree/master.svg?style=svg)](https://circleci.com/gh/testsquad/hive/tree/master)
+
+
+
+
 A dashboard for Docker Swarm.
 
 

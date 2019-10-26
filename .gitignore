@@ -1,6 +1,7 @@
 .idea
 .vscode
 .classpath
+__pycache__
 
 .venv
 *.log
@@ -9,3 +10,4 @@
 *.dll
 *.ipr
 *.iws
+*.db

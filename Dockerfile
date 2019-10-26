@@ -18,4 +18,4 @@ COPY ./src /opt/hive
 
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/hive/start"]
+ENTRYPOINT ["./start"]

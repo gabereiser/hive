@@ -2,7 +2,7 @@
 .vscode
 .classpath
 
-.env
+.venv
 *.log
 *.so
 *.a

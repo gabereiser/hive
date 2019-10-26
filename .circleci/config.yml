@@ -38,7 +38,7 @@ jobs:
           path: test-reports
           destination: test-reports
 
-      - container:
+      - run:
           name: Containerize
           command: |
             docker build . -t testsquad/hive

@@ -1,6 +1,0 @@
-#!/bin/sh
-export PYTHONPATH=.
-
-flask db upgrade
-
-twistd -n web --port tcp:8080 --wsgi app.app

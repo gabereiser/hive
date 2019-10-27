@@ -1,6 +1,6 @@
 FROM python:3-alpine
 
-RUN mkdir -p /opt/hive
+RUN mkdir -p /opt/hive/src
 
 WORKDIR /opt/hive
 
@@ -14,7 +14,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && pip install --no-cache-dir -r requirements.txt \
     && apk del --no-cache .build-deps
 
-COPY ./src /opt/hive
+COPY . /opt/hive
 
 EXPOSE 8080
 

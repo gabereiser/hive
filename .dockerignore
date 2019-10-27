@@ -1,0 +1,7 @@
+.gitignore
+.git
+.venv
+.vscode
+.idea
+.classpath
+__pycache__

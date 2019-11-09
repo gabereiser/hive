@@ -11,3 +11,5 @@ __pycache__
 *.ipr
 *.iws
 *.db
+node_modules
+.sass_cache

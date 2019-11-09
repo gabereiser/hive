@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/animate-css/vivify.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/themify-icons/themify-icons.css') }}">
+        <!-- MAIN CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        {% block head %}
+        <title>{% block title %}{% endblock %} - Hive</title>
+        {% endblock %}
+    </head>
+
+    <body class="theme-cyan font-montserrat">
+        {% block body %}
+        {% endblock %}
+        <script src="{{ url_for('static', filename='bundles/libscripts.bundle.js') }}"></script>    
+        <script src="{{ url_for('static', filename='bundles/vendorscripts.bundle.js') }}"></script>
+        <script src="{{ url_for('static', filename='bundles/mainscripts.bundle.js') }}"></script>
+    </body>
+</html>

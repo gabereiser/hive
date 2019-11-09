@@ -5,3 +5,4 @@
 .idea
 .classpath
 __pycache__
+node_modules

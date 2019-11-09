@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block body %}
+    
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <div class="bar4"></div>
+            <div class="bar5"></div>
+        </div>
+    </div>
+    
+    <div class="pattern">
+        <span class="red"></span>
+        <span class="indigo"></span>
+        <span class="blue"></span>
+        <span class="green"></span>
+        <span class="orange"></span>
+    </div>
+    
+    <div class="auth-main particles_js">
+        <div class="auth_div vivify popIn">
+            <div class="auth_brand">
+                <a class="navbar-brand" href="javascript:void(0);"><img src="{{ url_for('static', filename='/images/icon.svg') }}" width="30" height="30" class="d-inline-block align-top mr-2" alt="">Hive</a>
+            </div>
+            <div class="card">
+                <div class="body">
+                    <p class="lead">Login to your account</p>
+                    <form class="form-auth-small m-t-20" action="{{ url_for('home.login') }}" method='POST'>
+                        <div class="form-group">
+                            <label for="signin-username" class="control-label sr-only">Username</label>
+                            <input type="text" name="username" class="form-control round" id="signin-username" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Password</label>
+                            <input type="password" name="password" class="form-control round" id="signin-password" placeholder="Password">
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="fancy-checkbox element-left">
+                                <input type="checkbox" name="remember">
+                                <span>Remember me</span>
+                            </label>								
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-round btn-block">LOGIN</button>
+                        <div class="bottom">
+                            <span class="helper-text m-b-10 m-l-10"><i class="fa fa-lock"></i> <a href="{{ url_for('home.forgot_password') }}">Forgot password?</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="particles-js"></div>
+    </div>
+            
+        
+{% endblock %}

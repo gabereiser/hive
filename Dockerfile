@@ -6,6 +6,8 @@ WORKDIR /opt/hive
 
 COPY ./requirements.txt /opt/hive/requirements.txt
 
+COPY ./package.json /opt/hive/package.json
+
 RUN apk add --no-cache --virtual .build-deps \
     gcc \
     python3-dev \
@@ -14,7 +16,11 @@ RUN apk add --no-cache --virtual .build-deps \
     && pip install --no-cache-dir -r requirements.txt \
     && apk del --no-cache .build-deps
 
+RUN apk add --update nodejs npm
+
 COPY . /opt/hive
+
+RUN npm install && npx webpack && rm -rf node_modules
 
 EXPOSE 8080
 

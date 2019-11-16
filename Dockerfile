@@ -16,11 +16,11 @@ RUN apk add --no-cache --virtual .build-deps \
     && pip install --no-cache-dir -r requirements.txt \
     && apk del --no-cache .build-deps
 
-RUN apk add --update nodejs npm
+RUN apk add --update nodejs npm scss
 
 COPY . /opt/hive
 
-RUN npm install && scss /opt/hive/scss/main.scss /opt/hive/static/css/main.css && npx webpack && rm -rf node_modules
+RUN npm install && npx webpack && rm -rf node_modules
 
 EXPOSE 8080
 

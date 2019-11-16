@@ -20,7 +20,7 @@ RUN apk add --update nodejs npm
 
 COPY . /opt/hive
 
-RUN npm install && npx webpack && rm -rf node_modules
+RUN npm install && scss /opt/hive/scss/main.scss /opt/hive/static/css/main.css && npx webpack && rm -rf node_modules
 
 EXPOSE 8080
 

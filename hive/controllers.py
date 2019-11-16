@@ -1,22 +1,22 @@
 from flask import Blueprint, render_template, jsonify, flash, request, abort, redirect # noqa
-from flask import url_for
+from flask import url_for, send_from_directory
 from flask_login import login_user, logout_user, login_required, current_user
 import logging
 import hashlib
+import os
 from datetime import datetime
-from models import User
+from .models import User
 
 logger = logging.getLogger("controllers")
 route = Blueprint("home", __name__)
 
 
-@route.route("/heartbeat")
-def heartbeat():
+@route.route("/status")
+def status():
     return jsonify({"status": "ok"})
 
 
 @route.route("/")
-@route.route("/index")
 @login_required
 def home():
     return render_template("index.html")
@@ -39,23 +39,25 @@ def login():
         return redirect(url_for('index'))
     if request.method == 'POST':
         # Login and validate the user.
-        username = str(request.form['username'])
+        username = str(request.form['username'])  # encode username to str
         hashword = hashlib.sha256(str(request.form['password']).encode('utf8')).hexdigest()
         remember = bool(request.form.get("remember", default=False))
-        user = User.query.filter_by(username=username, password_hash=hashword).first()
-        print("{} {} {}".format(username, request.form['password'], remember))
+        user = User.query.filter_by(username=username, password_hash=hashword).first()  # user exist?
         if user is None:
-            flash('Invalid username and or password.')
-            return redirect(url_for('home.login'))
-        if user:
-            user.save()
+            return {
+                'status': 'error',
+                'errors': [
+                    "Invalid username/password."
+                ]
+            }
+        else:
             login_user(user, remember=remember)
 
-        flash('Logged in successfully.')
-
         next = request.args.get('next')
-
-        return redirect(next or url_for('home.home'))
+        return {
+            'status': 'ok',
+            'redirect': next or url_for('home.home')
+        }
     return render_template('login.html')
 
 
@@ -63,7 +65,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("home.home"))
 
 
 @route.route("/forgot-password")

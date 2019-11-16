@@ -2,8 +2,11 @@ const path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  mode: 'production',
-  entry: path.resolve(__dirname, 'hive/js/app.js'),
+  mode: 'development',
+  entry: {
+    app: path.resolve(__dirname, 'hive/js/app.jsx'),
+    login: path.resolve(__dirname, 'hive/js/login.jsx'),
+  },
   output: {
     path: path.resolve(__dirname, 'hive/static/js'),
     filename: '[name].min.js'
@@ -11,14 +14,16 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({
       'React':     'react',
-      'ReactDOM':  'react-dom',
-      '$':         'jquery'
+      'ReactDOM':  'react-dom'
     })
   ],
+  externals: {
+    jquery: 'jquery'
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|json|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
@@ -26,7 +31,15 @@ module.exports = {
         }
       },
       { test: /\.css$/, use: 'css-loader' },
-      { test: /\.scss$/, use: ['css-loader', 'sass-loader'] },
+      { test: /\.scss$/, use: ['css-loader', {
+            loader: 'sass-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: '../css/'
+            }
+          }
+        ] 
+      },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [

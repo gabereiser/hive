@@ -1,15 +1,16 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_login import LoginManager
 from flask_migrate import Migrate, upgrade
 from hashlib import sha256
 from logging import basicConfig, getLogger, INFO
-from config import Config
+from .config import Config
 from flask_sqlalchemy import SQLAlchemy
 
 basicConfig(level=INFO)
 
 log = getLogger("HIVE")
 db = SQLAlchemy()
+
 
 def create_app(test_config=None):
     log.info("Begin Initialization")
@@ -25,7 +26,7 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
     with app.app_context():
         db.init_app(app)
-        from models import User
+        from .models import User
         from . import controllers
         login_manager = LoginManager(app)
         login_manager.login_view = "/login"
@@ -35,14 +36,15 @@ def create_app(test_config=None):
             return User.query.get(int(id))
         try:
             admin = load_user(1)
-            print(admin)
             if admin is None:
+                print("Creating initial admin user...")
                 admin = User()
                 admin.id = 1
                 admin.username = "admin"
                 admin.password_hash = sha256("admin".encode('utf8')).hexdigest()
                 db.session.add(admin)
                 db.session.commit()
+                print("Done, login with admin/admin")
         except:
             pass
         Migrate(app, db)

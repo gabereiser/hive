@@ -16,7 +16,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && pip install --no-cache-dir -r requirements.txt \
     && apk del --no-cache .build-deps
 
-RUN apk add --update nodejs npm node-scss
+RUN apk add --update nodejs npm
 
 COPY . /opt/hive
 

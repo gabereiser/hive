@@ -6,6 +6,7 @@ import hashlib
 import os
 from datetime import datetime
 from .models import User
+from .docker import Docker
 
 logger = logging.getLogger("controllers")
 route = Blueprint("home", __name__)
@@ -27,7 +28,7 @@ def home():
 def profile():
     if request.method == 'POST' and current_user.is_active():
         user = current_user
-        user.password_hash = hashlib.sha256(request.form['password'])
+        user.password_hash = hashlib.sha256(str(request.form['password']).encode('utf8')).hexdigest()
         user.save()
     return render_template("profile.html")
 
@@ -68,6 +69,12 @@ def logout():
     return redirect(url_for("home.home"))
 
 
-@route.route("/forgot-password")
-def forgot_password():
-    return render_template('forgot-password.html')
+@route.route("/nodes/list")
+@login_required
+def docker_nodes_list():
+    return Docker.node_list()
+
+@route.route("/nodes/<str:id>")
+@login_required
+def docker_nodes_get(id):
+    return Docker.node_get(id)

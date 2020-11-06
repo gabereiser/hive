@@ -5,12 +5,14 @@
 __pycache__
 
 .venv
+.env
 *.log
 *.so
 *.a
 *.dll
 *.ipr
 *.iws
+*.iml
 *.db
 node_modules
 .sass-cache

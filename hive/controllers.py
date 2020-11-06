@@ -74,6 +74,7 @@ def logout():
 def docker_nodes_list():
     return Docker.node_list()
 
+
 @route.route("/nodes/<str:id>")
 @login_required
 def docker_nodes_get(id):

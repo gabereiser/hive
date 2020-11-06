@@ -2,7 +2,7 @@ import docker
 client = docker.Client(base_url='unix://var/run/docker.sock')
 
 
-class Docker(object):
+class Docker():
 
     def node_list(self, filter=None):
         return client.nodes.list(filter)

@@ -3957,6 +3957,9 @@ a:hover, a:focus {
   .overlay.open {
     display: block; }
 
+.hidden {
+  display: none; }
+
 @media screen and (max-width: 767px) {
   .hidden-xs {
     display: none; } }

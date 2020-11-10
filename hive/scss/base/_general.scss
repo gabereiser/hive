@@ -42,6 +42,9 @@ a {
     }
 }
 
+.hidden{
+  display: none;
+}
 
 @include max-screen($break-small - 1px){
     .hidden-xs{

@@ -29,8 +29,8 @@
     </div>
     
     <div class="auth-main">
-        <video autoplay muted id="login-background">
-            <source src="https://testsquad.github.io/hive-cdn/galaxy.mp4" type="video/mp4">
+        <video autoplay muted id="login-background" loop=true>
+            <source src="https://gabereiser.github.io/hive-cdn/galaxy.mp4" type="video/mp4">
         </video>
         <div class="auth_div">
             <div class="card">
@@ -48,15 +48,15 @@
                     <form class="form-auth-small m-t-20" id="loginForm" onsubmit="event.preventDefault(); Login().loginHandler(this);" method='POST'>
                         <div class="form-group">
                             <label for="signin-username" class="control-label sr-only">Username</label>
-                            <input type="text" name="username" class="form-control round" id="signin-username" placeholder="Username">
+                            <input type="text" name="username" class="form-control round" id="signin-username" placeholder="Username" tabindex="0">
                         </div>
                         <div class="form-group">
                             <label for="signin-password" class="control-label sr-only">Password</label>
                             <input type="password" name="password" class="form-control round" id="signin-password" placeholder="Password">
                         </div>
-                        <div class="form-group clearfix">
+                        <div class="hidden">
                             <label class="fancy-checkbox element-left">
-                                <input type="checkbox" name="remember">
+                                <input type="checkbox" name="remember" checked>
                                 <span>Remember me</span>
                             </label>								
                         </div>

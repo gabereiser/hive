@@ -14,5 +14,7 @@ __pycache__
 *.iws
 *.iml
 *.db
+.coverage.xml
 node_modules
 .sass-cache
+*.pid

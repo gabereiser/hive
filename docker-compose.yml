@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+
+  db:
+    image: postgres:9.6-alpine
+    restart: always
+    networks:
+      - hive
+    volumes:
+      - ./postgresql-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=test
+      - POSTGRES_DATABASE=db
+      - PGDATA=/var/lib/postgresql/data
+
+  web:
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      - ENV=development
+      - DATABASE_URI=postgresql://test:test@db/test
+      - SECRET_KEY="0000000000000000000000000000000000000000000000000000000000000000"
+    links:
+      - db
+    volumes:
+      - .:/opt/hive
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - hive
+    command:
+      ./scripts/start-dev
+
+networks:
+  hive:

@@ -1,8 +1,0 @@
-#!/bin/sh
-export PYTHONPATH=${PYTHONPATH}:${PWD}
-export FLASK_APP=hive
-export FLASK_ENV=production
-
-flask db upgrade
-echo "END DATABASE MIGRATIONS\nSTARTING HIVE..."
-twistd -n web --port tcp:8080 --wsgi wsgi.app

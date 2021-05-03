@@ -10,3 +10,5 @@ class Config(object):
     SECRET_KEY = os.getenv("SECRET_KEY") or \
         '0000000000000000000000000000000000000000000000000000000000000000'
     REMEMBER_COOKIE_DURATION = 15 * 60  # in seconds...  15 minutes
+
+    SUPPORT_EMAIL = "support@testsquad.io"

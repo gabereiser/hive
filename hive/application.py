@@ -1,17 +1,16 @@
 import base64
-import argparse
 import uuid
 
-import click
 from flask import Flask
 from flask.cli import AppGroup
 from flask_login import LoginManager
-from flask_script import Command, Manager
+from flask_mail import Mail
+from flask_migrate import Migrate
+from flask_script import Manager
 from logging import basicConfig, getLogger, INFO
 
 from werkzeug.security import generate_password_hash
-
-from hive import db, migrate, mail, manager
+from hive.database import db
 from hive.models import User
 from hive.models import Organization
 from .config import Config
@@ -28,6 +27,8 @@ cli = AppGroup("admin")
 class Application(Flask):
     _login_manager: LoginManager
     _manager: Manager
+    _mail: Mail
+    _migrate: Migrate
 
     def __init__(self, test_config=None):
         """
@@ -39,37 +40,36 @@ class Application(Flask):
                          static_folder='static',
                          template_folder='templates')
 
+        self._mail = Mail()
+        self._migrate = Migrate()
+        self._manager = Manager()
+
         if test_config is None:
             # load the instance config, if it exists, when not testing
             self.config.from_object(Config)
+
         else:
             # load the test config if passed in
             self.config.from_mapping(test_config)
 
-        self.init()
-
-    def init(self):
-        with self.app_context() as context:  # initialize bindings, database, routes
+    def init(self, testing: bool = False):
+        with self.app_context():  # initialize bindings, database, routes
             db.init_app(self)
-            migrate.init_app(self, db)
-            mail.init_app(self)
-
+            self._migrate.init_app(self, db)
+            self._mail.init_app(self)
             self._route_bind()
             self._auth_setup(LoginManager(self))
-
             self.cli.add_command(cli)
-
-    @staticmethod
-    def _model_exists(model_class):
-        engine = db.get_engine()
-        return model_class.metadata.tables[model_class.__tablename__].exists(engine)
+            if testing:
+                db.drop_all()
+                db.create_all()
 
     def _auth_setup(self, login_manager):
         login_manager.login_view = "/login"
 
         @login_manager.user_loader
         def load_user(user_id):
-            return User.query.get(uuid.uuid4(user_id))
+            return User.query.get(user_id)
 
         @login_manager.request_loader
         def load_user_from_request(request):
@@ -97,9 +97,11 @@ class Application(Flask):
             return None
         self._login_manager = login_manager
 
-    @staticmethod
     @cli.command("seed")
-    def seed():
+    def _bootstrap(self):
+        self.seed()
+
+    def seed(self):
         try:
             count = User.query.count()
             if count == 0:

@@ -8,4 +8,4 @@ echo "END DATABASE MIGRATIONS"
 echo "STARTING HIVE..."
 kill `cat twistd.pid` || true
 rm twistd.pid || true
-twistd -n web --listen tcp:8080 --wsgi wsgi.app
+twistd -n web --listen tcp:8080 --wsgi hive.wsgi.app

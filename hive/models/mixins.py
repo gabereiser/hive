@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import CHAR, TypeDecorator
 from sqlalchemy.dialects.postgresql import UUID
 
-from hive import db
+from hive.database import db
 
 
 def now():

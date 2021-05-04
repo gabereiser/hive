@@ -1,6 +1,6 @@
 from typing import Any, Dict
 
-from hive import db
+from hive.database import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from .mixins import UserTimeMixin, now

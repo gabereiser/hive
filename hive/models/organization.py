@@ -1,9 +1,8 @@
 from logging import getLogger
-from uuid import UUID
 
 from sqlalchemy import text
 
-from hive import db
+from hive.database import db
 
 from .mixins import GUID, TimeMixin, now
 

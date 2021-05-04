@@ -23,11 +23,15 @@ def login():
                 user.refresh()
             else:
                 error = "Invalid username or password."
+                flash(error, category="error")
         else:
             error = "Invalid username or password."
+            flash(error, category="error")
         if error == "":
             next = request.args.get('next')
-            redirect(next or url_for('index'))
+            redirect(next or url_for('home.home'))
+        else:
+            return render_template('login.html', error=error), 403
     return render_template('login.html', error=error)
 
 

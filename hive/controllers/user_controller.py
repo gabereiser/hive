@@ -1,4 +1,3 @@
-import hashlib
 from uuid import UUID
 
 from flask import Blueprint, render_template, jsonify, flash, request, abort, redirect  # noqa
@@ -20,7 +19,7 @@ def profile():
             flash("Success!", "success")
         else:
             flash(error, "error")
-    return render_template("profile.html", user=current_user)
+    return render_template("views/profile.html", user=current_user)
 
 
 @route.route("/users/list", defaults={'page': 1})
@@ -30,14 +29,14 @@ def user_list(page: int = 0):
     limit = request.args.get("limit", 50)
     offset = limit*(page-1)
     users = User.query.order_by(User.id).slice(offset, offset+limit)
-    return render_template("user_list.html", users=users)
+    return render_template("views/user_list.html", users=users)
 
 
 @route.route("/users/<uuid:user_id>")
 @login_required
 def user_view(user_id: UUID):
-    user = User.query.filter_by(user_id=user_id).first()
+    user = User.query.get(user_id)
     if user is not None:
-        return render_template("user_details.html", user=user)
+        return render_template("views/user_details.html", user=user)
     else:
         abort(404)

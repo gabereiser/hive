@@ -31,8 +31,8 @@ def login():
             next = request.args.get('next')
             redirect(next or url_for('home.home'))
         else:
-            return render_template('login.html', error=error), 403
-    return render_template('login.html', error=error)
+            return render_template('views/accounts/login.html', error=error), 403
+    return render_template('views/accounts/login.html', error=error)
 
 
 @route.route("/logout")

@@ -1,0 +1,38 @@
+<nav class="navbar top-navbar">
+    <div class="container-fluid">
+
+        <div class="navbar-left">
+            <div class="navbar-btn">
+                <a href="/"><img src="/images/icon.svg" alt="Hive Logo" class="img-fluid logo"></a>
+                <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
+            </div>
+            <!-- <ul class="nav navbar-nav">
+                <li class="p_social"><a href="page-social.html" class="social icon-menu" title="News">Social</a></li>
+                <li class="p_news"><a href="page-news.html" class="news icon-menu" title="News">News</a></li>
+                <li class="p_blog"><a href="page-blog.html" class="blog icon-menu" title="Blog">Blog</a></li>
+            </ul> -->
+        </div>
+
+        <div class="navbar-right">
+            <div id="navbar-menu">
+                <ul class="nav navbar-nav">
+                    <li><div class="user-account">
+                        <div class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <strong>{{ current_user.username }}</strong>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="/me/profile"><i class="icon-user"></i>Profile</a></li>
+                                <li><a href="/me/messages"><i class="icon-envelope-open"></i>Messages</a></li>
+                                <li><a href="/me/settings"><i class="icon-settings"></i>Settings</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout"><i class="icon-logout"></i>Logout</a></li>
+                            </ul>
+                        </div></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
+</nav>

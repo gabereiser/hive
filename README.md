@@ -19,3 +19,10 @@ To install hive, first create a docker swarm. Once a swarm has been created, run
 Once the stack has been deployed, you can visit `<MASTER_IP>:8080`
 
 
+### Development ###
+
+See `./build.sh`
+
+### Features ###
+
+Will fill this out when there are some :D

@@ -20,7 +20,7 @@ class HiveApplicationTest(TestCaseMixin, TestCase):
         pass
 
     def test_application_index(self):
-        client = self.create_app().test_client()
+        client = self.client()
         response: Response = client.get('/')
         self.assertFalse(response.is_json)
         self.assertEqual(response.status_code, 302)
@@ -38,8 +38,7 @@ class HiveApplicationTest(TestCaseMixin, TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_application_status(self):
-        app = self.create_app()
-        client = self.create_app().test_client()
+        client = self.client()
         status: Response = client.get('/api/status')
         self.assertTrue(status.is_json)
         self.assertEqual(status.json.get('status'), 'ok')

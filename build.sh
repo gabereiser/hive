@@ -21,7 +21,7 @@ fi
 
 if [ "$1" = "test" ]
   then
-    nosetests test --with-coverage --with-xunit --xunit-file=./.coverage.xml
+    nosetests -w test
 
 fi
 

@@ -1,21 +1,13 @@
-from hive.application import Application
-from hive.database import db
-
-config = {
-    'ENV': 'test',
-    'TESTING': True,
-    'SQLALCHEMY_TRACK_MODIFICATIONS': True,
-    'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-    'SECRET_KEY': 'supersecret'
-}
+from hive.models import User
+from test import app
 
 
 class TestCaseMixin:
 
     @staticmethod
-    def create_app():
-        app = Application(test_config=config)
-        app.init(testing=True)
-        with app.app_context():
-            app.seed()
-        return app
+    def client():
+        return app.test_client()
+
+    @staticmethod
+    def get_admin_user():
+        return User.query.first()

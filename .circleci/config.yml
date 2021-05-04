@@ -37,7 +37,7 @@ jobs:
           name: Run Tests
           command: |
             . .venv/bin/activate
-            nosetests -w test --with-coverage --cover-package hive --cover-html --cover-html-dir ../test-reports --cover-xml --cover-xml-file ../.coverage.xml
+            nosetests -w test
 
       - store_artifacts:
           path: test-reports

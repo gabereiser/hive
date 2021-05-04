@@ -2,6 +2,7 @@
 .vscode
 .classpath
 .DS_Store
+
 __pycache__
 postgresql-data
 .venv
@@ -15,6 +16,8 @@ postgresql-data
 *.iml
 *.db
 .coverage.xml
+.coverage
+test-reports
 node_modules
 .sass-cache
 *.pid

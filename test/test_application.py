@@ -1,6 +1,6 @@
 from unittest import TestCase
 from flask import Response
-from mixins.test_case import TestCaseMixin
+from .mixins.test_case import TestCaseMixin
 
 
 class HiveApplicationTest(TestCaseMixin, TestCase):

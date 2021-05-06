@@ -1,21 +1,22 @@
 import base64
-import uuid
-
+import os
+from time import sleep
 from flask import Flask
 from flask.cli import AppGroup
 from flask_login import LoginManager
 from flask_mail import Mail
-from flask_migrate import Migrate
 from flask_script import Manager
+from flask_swagger_ui import get_swaggerui_blueprint
 from logging import basicConfig, getLogger, INFO
 
 from werkzeug.security import generate_password_hash
-from hive.database import db
+from hive.database import db, migrate
 from hive.models import User
 from hive.models import Organization
 from .config import Config
 from .controllers import auth_controller, docker_controller, service_controller, user_controller
-
+from .controllers.api import metrics, auth, block, cluster, dns, images, nodes, orgs, secrets, \
+    users, volumes
 
 basicConfig(level=INFO)
 
@@ -28,7 +29,6 @@ class Application(Flask):
     _login_manager: LoginManager
     _manager: Manager
     _mail: Mail
-    _migrate: Migrate
 
     def __init__(self, test_config=None):
         """
@@ -36,12 +36,12 @@ class Application(Flask):
         Args:
             test_config: Optional config dict to initialize with instead of .config.py
         """
+        log.info(f"Starting Application in {os.getenv('FLASK_ENV')}")
         super().__init__(__name__, static_url_path='',
                          static_folder='static',
                          template_folder='templates')
 
         self._mail = Mail()
-        self._migrate = Migrate()
         self._manager = Manager()
 
         if test_config is None:
@@ -52,10 +52,14 @@ class Application(Flask):
             # load the test config if passed in
             self.config.from_mapping(test_config)
 
+        if os.getenv("FLASK_ENV") != "production":
+            sleep(5.0)
+            # wait for the database to be available and create it
+
     def init(self, testing: bool = False):
         with self.app_context():  # initialize bindings, database, routes
             db.init_app(self)
-            self._migrate.init_app(self, db)
+            migrate.init_app(self, db)
             self._mail.init_app(self)
             self._route_bind()
             self._auth_setup(LoginManager(self))
@@ -97,34 +101,69 @@ class Application(Flask):
             return None
         self._login_manager = login_manager
 
-    @cli.command("seed")
-    def _bootstrap(self):
-        self.seed()
-
-    def seed(self):
-        try:
-            count = User.query.count()
-            if count == 0:
-                log.info("Creating initial Admin tenant...")
-                admin_tenant = Organization("Admin")
-                db.session.add(admin_tenant)
-                db.session.commit()
-
-                log.info("Creating initial admin user...")
-                admin = User("admin", "support@testsquad.io")
-                admin.password = generate_password_hash("admin")
-                db.session.add(admin)
-                db.session.commit()
-                log.info(admin.id)
-                admin_tenant.add_user(admin, 100)
-                log.info("Complete, login with admin/admin")
-                return
-            log.info("Seed Complete.")
-        except RuntimeError as ex:
-            pass
-
     def _route_bind(self):
+        """
+        Binds the routes to the application via Flask Blueprints.
+        API registers first and then the front-end
+        """
+        self.register_blueprint(auth.route)
+        self.register_blueprint(block.route)
+        self.register_blueprint(cluster.route)
+        self.register_blueprint(dns.route)
+        self.register_blueprint(images.route)
+        self.register_blueprint(metrics.route)
+        self.register_blueprint(nodes.route)
+        self.register_blueprint(orgs.route)
+        self.register_blueprint(secrets.route)
+        self.register_blueprint(users.route)
+        self.register_blueprint(volumes.route)
+
         self.register_blueprint(auth_controller.route)
         self.register_blueprint(docker_controller.route)
         self.register_blueprint(service_controller.route)
         self.register_blueprint(user_controller.route)
+
+        swagger_blueprint = get_swaggerui_blueprint(
+            base_url="/api/docs",
+            api_url="/api/spec",
+            config={
+                "app_name": "Hive API Documentation"
+            }
+        )
+        self.register_blueprint(swagger_blueprint)
+
+    def seed(self):
+        return _seed()
+
+
+def _seed():
+    db.drop_all()
+    db.create_all()
+    try:
+        count = User.query.count()
+        if count == 0:
+            log.info("Creating initial Admin tenant...")
+            admin_tenant = Organization("Admin")
+            db.session.add(admin_tenant)
+            db.session.commit()
+
+            log.info("Creating initial admin user...")
+            admin = User("admin", "support@testsquad.io")
+            admin.password = generate_password_hash("admin")
+            db.session.add(admin)
+            db.session.commit()
+            log.info(admin.id)
+            admin_tenant.add_user(admin, 100)
+            log.info("Complete, login with admin/admin")
+            return
+        log.info("Seed Complete.")
+    except RuntimeError as ex:
+        log.error("Seed error", exc_info=ex)
+        pass
+    except:
+        pass
+
+
+@cli.command("seed")
+def _seed_command():
+    _seed()

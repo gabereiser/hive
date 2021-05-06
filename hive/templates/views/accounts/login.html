@@ -1,13 +1,16 @@
 {% extends "layouts/base-fullscreen.html" %}
 {% block title %}Login{% endblock %}
+
 {% block head %}
   {{ super() }}
 {% endblock %}
+
 {% block scripts %}
   {{ super() }}
-  <script src="{{ url_for('static', filename='/js/login.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='/js/login_view.min.js') }}"></script>
 {% endblock %}
-{% block body %}
+
+{% block content %}
     {{ super() }}
     
     <div class="auth-main">
@@ -24,8 +27,8 @@
                             <div class="text-white">{{ message }}</div>
                           {% endfor %}
                         </div>
-                        {% endif %}
-                      {% endwith %}
+                      {% endif %}
+                    {% endwith %}
                     <p class="lead">Login to your account</p>
                     <form class="form-auth-small m-t-20" id="loginForm" onsubmit="event.preventDefault(); Login().loginHandler(this);" method='POST'>
                         <div class="form-group">
@@ -50,6 +53,4 @@
         </div>
         <div id="particles-js"></div>
     </div>
-            
-        
 {% endblock %}

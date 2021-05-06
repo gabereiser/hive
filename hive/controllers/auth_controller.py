@@ -3,12 +3,12 @@ from flask_login import current_user, login_user, login_required, logout_user
 
 from hive.models import User
 
-route = Blueprint("auth", __name__)
+route = Blueprint("auth_controller", __name__)
 
 
 @route.route('/login', methods=['GET', 'POST'])
 def login():
-    error = ""
+    error = False
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     if request.method == 'POST':
@@ -22,17 +22,16 @@ def login():
                 login_user(user, remember=remember)
                 user.refresh()
             else:
-                error = "Invalid username or password."
-                flash(error, category="error")
+                error = True
+                flash("Invalid username and/or password.", category="error")
         else:
-            error = "Invalid username or password."
-            flash(error, category="error")
-        if error == "":
+            error = True
+            flash("Invalid username and/or password.", category="error")
+        if not error:
             next = request.args.get('next')
             redirect(next or url_for('home.home'))
-        else:
-            return render_template('views/accounts/login.html', error=error), 403
-    return render_template('views/accounts/login.html', error=error)
+
+    return render_template('views/accounts/login.html')
 
 
 @route.route("/logout")

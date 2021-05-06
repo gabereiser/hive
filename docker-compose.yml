@@ -29,7 +29,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - hive
-    command:
+    entrypoint:
       ./scripts/start-dev
 
 networks:

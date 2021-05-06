@@ -10,7 +10,7 @@ fi
 if [ "$1" = "build" ]
   then
     npm install && npx webpack
-    scss hive/scss/main.scss hive/static/css/main.css
+    sassc hive/scss/main.scss hive/static/css/main.css
     docker-compose build
 fi
 
@@ -21,6 +21,7 @@ fi
 
 if [ "$1" = "test" ]
   then
+    export FLASK_ENV='test'
     nosetests -w test
 
 fi

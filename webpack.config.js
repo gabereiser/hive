@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   entry: {
     app: path.resolve(__dirname, 'hive/js/app.jsx'),
-    login: path.resolve(__dirname, 'hive/js/login.jsx'),
+    login_view: path.resolve(__dirname, 'hive/js/views/accounts/login.jsx'),
   },
   output: {
     path: path.resolve(__dirname, 'hive/static/js'),
@@ -18,7 +18,7 @@ module.exports = {
     })
   ],
   externals: {
-    jquery: 'jquery'
+    jquery: 'jQuery'
   },
   module: {
     rules: [

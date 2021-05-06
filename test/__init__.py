@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from hive.application import Application
+from wsgi import app
 
 config = {
     'ENV': 'test',
@@ -10,13 +10,11 @@ config = {
     'SECRET_KEY': 'supersecret'
 }
 
-app = Application(test_config=config)
 log = getLogger("tests")
 
 
 def setup():
     log.info("Initializing Application")
-    app.init(testing=True)
     with app.app_context():
         log.info("Seeding In-Memory Test Database")
         app.seed()

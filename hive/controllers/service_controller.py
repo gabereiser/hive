@@ -4,11 +4,6 @@ from flask_login import login_required
 route = Blueprint("home", __name__)
 
 
-@route.route("/api/status")
-def status():
-    return jsonify({"status": "ok"})
-
-
 @route.route("/")
 @login_required
 def home():

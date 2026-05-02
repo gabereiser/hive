@@ -1,7 +1,7 @@
 alembic==1.6.0
 apache-libcloud==3.3.1
 attrs==20.3.0
-Authlib==0.15.3
+Authlib==1.6.11
 click==7.1.2
 coverage==5.5
 docker-py==1.10.6
